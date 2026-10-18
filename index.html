@@ -1,0 +1,683 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Galaxy S24 | 강민철</title>
+<style>
+:root {
+  --bg: #080808;
+  --panel: #141414;
+  --panel2: #202020;
+  --text: #f5f5f5;
+  --muted: #888;
+  --accent: #c5f36b;
+  --line: #292929;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #000;
+  color: var(--text);
+  font-family: "SamsungOne", "Apple SD Gothic Neo", sans-serif;
+  font-size: 14px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+.phone {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  margin: auto;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 82px;
+}
+.status {
+  height: 34px;
+  padding: 8px 23px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-icons { letter-spacing: 2px; }
+.topbar {
+  padding: 20px 23px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.topbar h1 { font-size: 25px; margin: 0; font-weight: 750; }
+.subtitle { color: var(--muted); font-size: 11px; margin-top: 6px; }
+.icon-btn {
+  width: 39px; height: 39px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 50%;
+  font-size: 18px;
+}
+.view { display: none; }
+.view.active { display: block; }
+.home-content { padding: 0 19px; }
+.wallpaper {
+  height: 235px;
+  border-radius: 25px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 75% 80%, #343434 0%, transparent 42%),
+    radial-gradient(ellipse at 10% 10%, #242424 0%, transparent 50%),
+    linear-gradient(145deg, #151515, #050505 75%);
+  border: 1px solid #262626;
+}
+.wallpaper::before {
+  content: "";
+  position: absolute;
+  width: 240px; height: 240px;
+  right: -100px; top: 30px;
+  border: 1px solid #373737;
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px #ffffff04, 0 0 0 48px #ffffff03;
+}
+.wallpaper-time {
+  font-size: 49px;
+  letter-spacing: -2px;
+  font-weight: 300;
+  position: relative;
+}
+.wallpaper-date {
+  position: relative;
+  margin-top: 4px;
+  color: #aaa;
+  font-size: 12px;
+}
+.wallpaper-label {
+  position: absolute;
+  left: 21px; bottom: 20px;
+  color: #777; font-size: 10px; letter-spacing: 3px;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 27px 2px 13px;
+}
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 19px 8px;
+}
+.app {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  border: 0; background: transparent;
+  min-width: 0;
+}
+.app-icon {
+  width: 53px; height: 53px;
+  border-radius: 18px;
+  background: #202020;
+  display: grid; place-items: center;
+  font-size: 23px;
+  border: 1px solid #303030;
+}
+.app span:last-child {
+  font-size: 11px; color: #ddd;
+}
+.app-icon.green { background: #283523; }
+.app-icon.blue { background: #202e40; }
+.app-icon.purple { background: #35263e; }
+.app-icon.gold { background: #393123; }
+.recent {
+  margin-top: 27px;
+  padding: 17px;
+  background: var(--panel);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+}
+.recent-head { display:flex; justify-content:space-between; align-items:center; }
+.recent-head strong { font-size: 14px; }
+.recent-head button {
+  background: none; border: 0; color: var(--muted); font-size: 12px;
+}
+.contact-row {
+  display:flex; align-items:center; gap:12px;
+  margin-top: 17px; cursor:pointer;
+}
+.avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  object-fit: cover; background: #d9c5fa; flex-shrink:0;
+}
+.contact-name { font-weight: 650; }
+.contact-desc { font-size: 11px; color: var(--muted); margin-top:5px; }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  max-width: 430px;
+  height: 75px;
+  padding: 8px 10px 18px;
+  display: flex;
+  justify-content: space-around;
+  background: #111111f5;
+  backdrop-filter: blur(20px);
+  border-top: 1px solid #292929;
+  z-index: 10;
+}
+.nav-btn {
+  background: none; border: 0; color: #777;
+  display:flex; flex-direction:column; align-items:center;
+  gap:5px; min-width:60px; font-size:10px;
+}
+.nav-btn .nav-icon { font-size:21px; }
+.nav-btn.active { color: var(--accent); }
+.page-padding { padding: 0 20px; }
+.back-row {
+  display:flex; align-items:center; gap:15px;
+  padding: 4px 0 20px;
+}
+.back-btn {
+  border:0; background:transparent; font-size:24px;
+  width:30px; padding:0;
+}
+.back-row h2 { font-size:20px; margin:0; }
+.search {
+  width:100%; padding:13px 16px;
+  background:#1b1b1b; border:1px solid #292929;
+  border-radius:13px; color:white; outline:none;
+  margin-bottom:14px;
+}
+.person-header {
+  display:flex; align-items:center; gap:12px;
+  padding: 12px 0 20px; border-bottom:1px solid var(--line);
+}
+.person-header .avatar { width:45px; height:45px; }
+.person-header .sub { font-size:11px; color:var(--muted); margin-top:5px; }
+.message-list { padding-top: 16px; }
+.date-divider {
+  display:flex; align-items:center; justify-content:center;
+  gap:10px; color:#777; font-size:11px; margin:22px 0 17px;
+}
+.date-divider::before, .date-divider::after {
+  content:""; height:1px; flex:1; background:#242424;
+}
+.msg {
+  display:flex; flex-direction:column; align-items:flex-end;
+  margin: 10px 0 14px;
+}
+.msg .bubble {
+  background:#292929; color:#f3f3f3;
+  border-radius:18px 5px 18px 18px;
+  padding:12px 15px; max-width:85%;
+  font-size:14px; line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.msg .time {
+  font-size:10px; color:#686868; margin-top:5px;
+}
+.chat-bottom {
+  position: sticky; bottom: 75px;
+  padding:13px 0 8px;
+  background:linear-gradient(transparent, #080808 22%);
+  display:flex; gap:9px; align-items:center;
+}
+.fake-input {
+  flex:1; padding:14px;
+  border:1px solid #303030; background:#191919;
+  border-radius:25px; color:#777;
+}
+.send-btn {
+  width:43px; height:43px; border:0;
+  border-radius:50%; background:#303030; color:#aaa;
+}
+.call-list { padding-bottom:20px; }
+.call-item {
+  display:flex; align-items:center; gap:13px;
+  padding:15px 0; border-bottom:1px solid #202020;
+}
+.call-symbol {
+  width:43px; height:43px; border-radius:50%;
+  display:grid; place-items:center; background:#202020;
+  font-size:18px; flex-shrink:0;
+}
+.call-info { flex:1; min-width:0; }
+.call-name { font-weight:650; }
+.call-meta { color:#888; font-size:11px; margin-top:6px; }
+.call-type { color:#999; font-size:11px; margin-top:5px; }
+.call-item .call-right { color:#777; font-size:19px; }
+.gallery-grid {
+  display:grid; grid-template-columns:repeat(2,1fr); gap:9px;
+}
+.photo-card {
+  border:1px solid #292929; background:#151515;
+  border-radius:13px; overflow:hidden; cursor:pointer;
+}
+.photo-card img {
+  width:100%; aspect-ratio:3/4; object-fit:cover;
+  display:block; background:#202020;
+}
+.photo-caption { padding:11px; }
+.photo-caption strong { font-size:12px; }
+.photo-caption div { color:#888; font-size:10px; margin-top:5px; }
+.empty-placeholder {
+  aspect-ratio:3/4; display:grid; place-items:center;
+  color:#666; padding:12px; text-align:center;
+}
+.note-card {
+  background:#191919; border:1px solid #303030;
+  border-radius:17px; padding:19px; cursor:pointer;
+}
+.note-card h3 { margin:0 0 13px; font-size:18px; }
+.note-card p { margin:0; line-height:1.8; color:#ddd; }
+.note-date { font-size:11px; color:#777; margin-top:17px; }
+.detail-overlay {
+  display:none; position:fixed; inset:0; z-index:20;
+  background:#000e; align-items:center; justify-content:center;
+  padding:20px;
+}
+.detail-overlay.show { display:flex; }
+.detail-box {
+  width:100%; max-width:390px; max-height:90dvh;
+  overflow:auto; background:#181818; border-radius:20px;
+  padding:18px; border:1px solid #333;
+}
+.detail-head {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:15px;
+}
+.detail-head button {
+  border:0; background:transparent; font-size:22px;
+}
+.detail-box img { width:100%; border-radius:10px; }
+.detail-box p { color:#aaa; line-height:1.7; }
+.settings-row {
+  display:flex; justify-content:space-between;
+  padding:17px 0; border-bottom:1px solid #292929;
+}
+.settings-row span:last-child { color:#888; }
+.home-indicator {
+  position:fixed; bottom:5px; left:50%;
+  transform:translateX(-50%);
+  width:105px; height:4px; border-radius:4px;
+  background:#eee; z-index:15; pointer-events:none;
+}
+@media(min-width:431px) {
+  body { padding:20px 0; background:#181818; }
+  .phone { min-height:calc(100dvh - 40px); border-radius:28px; }
+  .bottom-nav { bottom:20px; border-radius:0 0 28px 28px; }
+  .home-indicator { bottom:25px; }
+}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="status">
+    <span>3:16</span>
+    <span class="status-icons">● ▮ ▰</span>
+  </div>
+
+  <header class="topbar">
+    <div>
+      <h1 id="page-title">강민철</h1>
+      <div class="subtitle">Galaxy S24 · One UI 7</div>
+    </div>
+    <button class="icon-btn" onclick="openView('settings')" aria-label="설정">⚙</button>
+  </header>
+
+  <main>
+    <!-- 홈 -->
+    <section class="view active" id="home">
+      <div class="home-content">
+        <div class="wallpaper">
+          <div class="wallpaper-time">3:16</div>
+          <div class="wallpaper-date">2027년 12월 16일 화요일</div>
+          <div class="wallpaper-label">GALAXY S24</div>
+        </div>
+
+        <div class="section-title">애플리케이션</div>
+        <div class="app-grid">
+          <button class="app" onclick="openView('messages')">
+            <span class="app-icon green">▰</span><span>메시지</span>
+          </button>
+          <button class="app" onclick="openView('calls')">
+            <span class="app-icon green">☎</span><span>전화</span>
+          </button>
+          <button class="app" onclick="openView('gallery')">
+            <span class="app-icon purple">▧</span><span>갤러리</span>
+          </button>
+          <button class="app" onclick="openView('notes')">
+            <span class="app-icon gold">▤</span><span>메모</span>
+          </button>
+          <button class="app" onclick="openView('contacts')">
+            <span class="app-icon blue">♙</span><span>연락처</span>
+          </button>
+          <button class="app" onclick="openView('settings')">
+            <span class="app-icon">⚙</span><span>설정</span>
+          </button>
+        </div>
+
+        <div class="recent">
+          <div class="recent-head">
+            <strong>최근 대화</strong>
+            <button onclick="openView('messages')">모두 보기 ›</button>
+          </div>
+          <div class="contact-row" onclick="openView('messages')">
+            <img class="avatar" src="images/profile.png" alt="나해수 프로필"
+                 onerror="this.style.display='none'">
+            <div>
+              <div class="contact-name">나해수</div>
+              <div class="contact-desc">야 · 씹냐?</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 메시지 목록 -->
+    <section class="view" id="messages">
+      <div class="page-padding">
+        <div class="back-row"><h2>메시지</h2></div>
+        <input class="search" placeholder="대화 검색" oninput="filterMessages(this.value)">
+        <div class="contact-row" onclick="openView('chat')" id="message-contact">
+          <img class="avatar" src="images/profile.png" alt="나해수 프로필"
+               onerror="this.style.display='none'">
+          <div style="flex:1">
+            <div class="contact-name">나해수</div>
+            <div class="contact-desc">야 · 씹냐?</div>
+          </div>
+          <div style="color:#777;font-size:11px">2026.04.07</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 실제 대화 내용 -->
+    <section class="view" id="chat">
+      <div class="page-padding">
+        <div class="back-row">
+          <button class="back-btn" onclick="openView('messages')">‹</button>
+          <img class="avatar" src="images/profile.png" alt="나해수 프로필"
+               onerror="this.style.display='none'">
+          <div><h2 style="font-size:17px">나해수</h2><div class="subtitle">연락처</div></div>
+        </div>
+        <div class="message-list" id="message-list"></div>
+        <div class="chat-bottom">
+          <div class="fake-input">메시지 입력</div>
+          <button class="send-btn" title="보내기" onclick="alert('저장된 기록을 보는 화면이야.')">➤</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 통화 기록 -->
+    <section class="view" id="calls">
+      <div class="page-padding">
+        <div class="back-row"><h2>최근기록</h2></div>
+        <input class="search" placeholder="통화 기록 검색" oninput="filterCalls(this.value)">
+        <div class="call-list" id="call-list"></div>
+      </div>
+    </section>
+
+    <!-- 사진첩 -->
+    <section class="view" id="gallery">
+      <div class="page-padding">
+        <div class="back-row"><h2>갤러리</h2></div>
+        <div style="color:#999;font-size:12px;margin-bottom:17px">사진 · 1개</div>
+        <div class="gallery-grid">
+          <div class="photo-card" onclick="showPhoto()">
+            <img src="images/prescription.jpg" alt="강민철의 처방전"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+            <div class="empty-placeholder" style="display:none">images/prescription.jpg<br>파일을 확인해</div>
+            <div class="photo-caption">
+              <strong>처방전</strong>
+              <div>2027년 8월 12일</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 메모장 -->
+    <section class="view" id="notes">
+      <div class="page-padding">
+        <div class="back-row"><h2>메모</h2></div>
+        <div class="note-card" onclick="showNote()">
+          <h3>할 일</h3>
+          <p>병원가서 약 처방</p>
+          <div class="note-date">2027년 10월 18일</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 연락처 -->
+    <section class="view" id="contacts">
+      <div class="page-padding">
+        <div class="back-row"><h2>연락처</h2></div>
+        <div class="contact-row" onclick="openView('chat')">
+          <img class="avatar" src="images/profile.png" alt="나해수 프로필"
+               onerror="this.style.display='none'">
+          <div><div class="contact-name">나해수</div><div class="contact-desc">저장된 연락처</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 설정 -->
+    <section class="view" id="settings">
+      <div class="page-padding">
+        <div class="back-row"><h2>설정</h2></div>
+        <div class="settings-row"><span>기기 이름</span><span>Galaxy S24</span></div>
+        <div class="settings-row"><span>One UI 버전</span><span>One UI 7</span></div>
+        <div class="settings-row"><span>배경화면</span><span>다크 블랙</span></div>
+        <div class="settings-row"><span>표시 시각</span><span>오후 3:16</span></div>
+        <div class="settings-row"><span>표시 날짜</span><span>2027.12.16</span></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-view="home" onclick="openView('home')">
+      <span class="nav-icon">⌂</span><span>홈</span>
+    </button>
+    <button class="nav-btn" data-view="messages" onclick="openView('messages')">
+      <span class="nav-icon">▰</span><span>메시지</span>
+    </button>
+    <button class="nav-btn" data-view="calls" onclick="openView('calls')">
+      <span class="nav-icon">☎</span><span>최근기록</span>
+    </button>
+    <button class="nav-btn" data-view="gallery" onclick="openView('gallery')">
+      <span class="nav-icon">▧</span><span>갤러리</span>
+    </button>
+  </nav>
+  <div class="home-indicator"></div>
+</div>
+
+<!-- 사진 상세 -->
+<div class="detail-overlay" id="photo-overlay" onclick="if(event.target===this)closeOverlay('photo-overlay')">
+  <div class="detail-box">
+    <div class="detail-head"><strong>처방전</strong><button onclick="closeOverlay('photo-overlay')">×</button></div>
+    <img src="images/prescription.jpg" alt="2027년 8월 12일 처방전">
+    <p>촬영 날짜: 2027년 8월 12일</p>
+  </div>
+</div>
+
+<!-- 메모 상세 -->
+<div class="detail-overlay" id="note-overlay" onclick="if(event.target===this)closeOverlay('note-overlay')">
+  <div class="detail-box">
+    <div class="detail-head"><strong>할 일</strong><button onclick="closeOverlay('note-overlay')">×</button></div>
+    <p style="color:#eee;font-size:16px">병원가서 약 처방</p>
+    <p>작성 날짜: 2027년 10월 18일</p>
+  </div>
+</div>
+
+<script>
+const messages = [
+  {
+    date: "2025년 6월 6일 금요일",
+    items: [
+      ["오전 2:34", "야"],
+      ["오전 2:34", "야"],
+      ["오전 2:34", "야"],
+      ["오전 2:35", "뭐하냐?"],
+      ["오후 4:24", "나해수"],
+      ["오후 4:24", "뭐하냐?"]
+    ]
+  },
+  {
+    date: "2025년 10월 7일 금요일",
+    items: [
+      ["오후 9:44", "나해수"],
+      ["오후 9:44", "보면 연락해"],
+      ["오후 9:45", "내가 어떻게든 돈 마련해 볼 테니까."]
+    ]
+  },
+  {
+    date: "2025년 11월 9일 토요일",
+    items: [
+      ["오후 6:03", "연락해"],
+      ["오후 6:03", "나해수"]
+    ]
+  },
+  {
+    date: "2026년 4월 7일 금요일",
+    items: [
+      ["오후 12:43", "야"],
+      ["오후 12:43", "씹냐?"]
+    ]
+  }
+];
+
+const calls = [
+  ["2025년 7월 18일", "오후 9:32", "나해수", "발신", ""],
+  ["2025년 8월 8일", "오후 11:05", "나해수", "발신", ""],
+  ["2025년 8월 20일", "오후 10:02", "나해수", "발신", ""],
+  ["2025년 9월 12일", "오후 6:03", "나해수", "발신", ""],
+  ["2025년 10월 2일", "오후 9:00", "나해수", "발신", ""],
+  ["2025년 10월 21일", "오후 8:30", "나해수", "발신", ""],
+  ["2025년 11월 03일", "오후 10:16", "나해수", "발신", ""],
+  ["2025년 11월 19일", "오후 6:42", "나해수", "발신", ""],
+  ["2025년 12월 07일", "오후 11:08", "나해수", "발신", ""],
+  ["2026년 01월 14일", "오전 12:31", "나해수", "발신", ""],
+  ["2026년 02월 26일", "오후 9:17", "나해수", "발신", ""],
+  ["2026년 04월 09일", "오후 7:53", "나해수", "발신", ""],
+  ["2026년 05월 21일", "오후 11:46", "나해수", "발신", ""],
+  ["2026년 07월 02일", "오후 8:05", "나해수", "발신", ""],
+  ["2026년 08월 17일", "오전 1:12", "나해수", "발신", ""],
+  ["2026년 09월 28일", "오후 10:39", "나해수", "발신", ""],
+  ["2026년 11월 06일", "오후 6:28", "나해수", "발신", ""],
+  ["2026년 12월 14일", "오후 7:24", "나해수", "발신", ""],
+  ["2027년 7월 17일", "오후 1:33", "서울한빛병원", "수신", "1분 38초"]
+];
+
+function openView(id) {
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.classList.add("active");
+
+  const titles = {
+    home: "강민철", messages: "메시지", chat: "나해수",
+    calls: "최근기록", gallery: "갤러리", notes: "메모",
+    contacts: "연락처", settings: "설정"
+  };
+  document.getElementById("page-title").textContent = titles[id] || "강민철";
+
+  document.querySelectorAll(".nav-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.view === id);
+  });
+  if (id === "chat") renderMessages();
+  if (id === "calls") renderCalls(calls);
+  window.scrollTo(0, 0);
+}
+
+function renderMessages() {
+  const root = document.getElementById("message-list");
+  root.innerHTML = "";
+  messages.forEach(group => {
+    const divider = document.createElement("div");
+    divider.className = "date-divider";
+    divider.textContent = group.date;
+    root.appendChild(divider);
+
+    group.items.forEach(item => {
+      const msg = document.createElement("div");
+      msg.className = "msg";
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = item[1];
+
+      const time = document.createElement("div");
+      time.className = "time";
+      time.textContent = "강민철 · " + item[0];
+
+      msg.append(bubble, time);
+      root.appendChild(msg);
+    });
+  });
+}
+
+function renderCalls(data) {
+  const root = document.getElementById("call-list");
+  root.innerHTML = "";
+  data.forEach(call => {
+    const row = document.createElement("div");
+    row.className = "call-item";
+
+    const symbol = document.createElement("div");
+    symbol.className = "call-symbol";
+    symbol.textContent = call[3] === "수신" ? "↙" : "↗";
+
+    const info = document.createElement("div");
+    info.className = "call-info";
+
+    const name = document.createElement("div");
+    name.className = "call-name";
+    name.textContent = call[2];
+
+    const meta = document.createElement("div");
+    meta.className = "call-meta";
+    meta.textContent = call[0] + " · " + call[1];
+
+    const type = document.createElement("div");
+    type.className = "call-type";
+    type.textContent = call[3] + (call[4] ? " · " + call[4] : "");
+
+    const right = document.createElement("div");
+    right.className = "call-right";
+    right.textContent = "☎";
+
+    info.append(name, meta, type);
+    row.append(symbol, info, right);
+    root.appendChild(row);
+  });
+}
+
+function filterMessages(value) {
+  const row = document.getElementById("message-contact");
+  row.style.display = "나해수".includes(value.trim()) || !value.trim()
+    ? "flex" : "none";
+}
+
+function filterCalls(value) {
+  const query = value.trim().toLowerCase();
+  renderCalls(calls.filter(c =>
+    c.join(" ").toLowerCase().includes(query)
+  ));
+}
+
+function showPhoto() {
+  document.getElementById("photo-overlay").classList.add("show");
+}
+function showNote() {
+  document.getElementById("note-overlay").classList.add("show");
+}
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove("show");
+}
+
+renderMessages();
+renderCalls(calls);
+</script>
+</body>
+</html>
